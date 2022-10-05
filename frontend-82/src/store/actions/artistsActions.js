@@ -1,4 +1,5 @@
 import axiosApi from "../../axiosApi";
+import {historyPush} from "./historyActions";
 
 export const FETCH_ARTISTS_REQUEST = 'FETCH_ARTISTS_REQUEST';
 export const FETCH_ARTISTS_SUCCESS = 'FETCH_ARTISTS_SUCCESS';
@@ -22,24 +23,23 @@ export const fetchArtists = () => {
     };
 };
 
-export const FETCH_SINGLE_ARTIST_REQUEST = 'FETCH_SINGLE_ARTIST_REQUEST';
-export const FETCH_SINGLE_ARTIST_SUCCESS = 'FETCH_SINGLE_ARTIST_SUCCESS';
-export const FETCH_SINGLE_ARTIST_FAILURE = 'FETCH_SINGLE_ARTIST_FAILURE';
+export const NEW_ARTIST_REQUEST = 'NEW_ARTIST_REQUEST';
+export const NEW_ARTIST_SUCCESS = 'NEW_ARTIST_SUCCESS';
+export const NEW_ARTIST_FAILURE = 'NEW_ARTIST_FAILURE';
 
-const fetchSingleArtistsRequest = () => ({type: FETCH_SINGLE_ARTIST_REQUEST});
-const fetchSingleArtistsSuccess = data => ({type: FETCH_SINGLE_ARTIST_SUCCESS, payload: data});
-const fetchSingleArtistsFailure = error => ({type: FETCH_SINGLE_ARTIST_FAILURE, payload: error});
+const newArtistRequest = () => ({type:NEW_ARTIST_REQUEST});
+const newArtistSuccess = () => ({type:NEW_ARTIST_SUCCESS});
+const newArtistFailure = error => ({type:NEW_ARTIST_FAILURE,payload:error});
 
-export const singleArtist = id => {
+export const postNewArtist = data => {
     return async dispatch => {
-        try {
-            dispatch(fetchSingleArtistsRequest());
-            const {data} = await axiosApi.get(`/artists/${id}`);
-            if (data) {
-                dispatch(fetchSingleArtistsSuccess(data));
-            }
+        try{
+            dispatch(newArtistRequest());
+            await axiosApi.post('/artists', data);
+            dispatch(newArtistSuccess());
+            dispatch(historyPush('/'));
         } catch (e) {
-            dispatch(fetchSingleArtistsFailure(e));
+            dispatch(newArtistFailure(e));
         }
-    };
-};
+    }
+}

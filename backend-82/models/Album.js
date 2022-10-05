@@ -17,6 +17,11 @@ const AlbumSchema = new Schema({
     },
     image:{
         type:String,
+    },
+    published:{
+        type:Boolean,
+        required:true,
+        default: false,
     }
 });
 

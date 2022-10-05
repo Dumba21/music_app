@@ -26,6 +26,11 @@ const TrackSchema = new Schema({
             },
             message: 'Number of the track should be unique',
         }
+    },
+    published:{
+        type:Boolean,
+        required:true,
+        default: false,
     }
 });
 

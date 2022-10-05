@@ -7,6 +7,7 @@ import Tracks from "./containers/Tracks/Tracks";
 import Login from "./containers/Login/Login";
 import Register from "./containers/Register/Register";
 import TrackHistory from "./containers/Tracks_History/Tracks_History";
+import NewArtist from "./containers/NewArtist/NewArtist";
 
 const App = () => {
     const location = useLocation();
@@ -21,7 +22,7 @@ const App = () => {
             setColor(colors[1])
         } else if (location.pathname.includes('/tracks')) {
             setColor(colors[0])
-        } else if (location.pathname.includes('/login') || location.pathname.includes('/register')) {
+        } else if (location.pathname.includes('/login') || location.pathname.includes('/register')|| location.pathname.includes('new')) {
             setBackground('#d1d1d8');
             setColor(colors[5]);
         } else if (location.pathname.includes('/track-history')) {
@@ -43,6 +44,7 @@ const App = () => {
                 <Route path={'/tracks/:id'} component={Tracks}/>
                 <Route path={'/login'} component={Login}/>
                 <Route path={'/register'} component={Register}/>
+                <Route path={'/artists/new'} component={NewArtist}/>
                 <Route path={'/track_history'} component={TrackHistory}/>
             </Switch>
         </Layout>

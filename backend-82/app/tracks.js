@@ -6,6 +6,7 @@ router.get('/', async (req, res) => {
     try {
         if (req.query.album) {
             const track = await Tracks.find({album: req.query.album})
+                .find({published: true})
                 .populate({
                     path: 'album',
                     populate: {

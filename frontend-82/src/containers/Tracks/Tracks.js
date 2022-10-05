@@ -39,8 +39,6 @@ const Tracks = ({match}) => {
                             width="300"
                             color="#8718d9"
                             ariaLabel="bars-loading"
-                            wrapperStyle={{}}
-                            wrapperClass=""
                             visible={loading}
                         />
                     </Backdrop>

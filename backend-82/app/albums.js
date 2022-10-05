@@ -9,9 +9,9 @@ router.get('/', async (req, res) => {
     try {
         if (req.query.artist) {
             const albums = await Album.find({artist: req.query.artist})
+                .find({published: true})
                 .populate('artist', 'name info')
                 .sort({releaseDate: 1});
-
             res.send(albums);
         } else {
             const albums = await Album.find();
