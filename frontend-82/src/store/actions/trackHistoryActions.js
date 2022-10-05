@@ -41,6 +41,7 @@ export const fetchPostTrack = trackId => {
             dispatch(fetchPostTracksRequest());
             const {data} = await axiosApi.post(`/track_history`, {track: trackId});
             if (data) {
+                toast.success('Nice', {icon: '👌', position: 'bottom-left', autoClose: 1500})
                 dispatch(fetchPostTracksSuccess(data));
             }
         } catch (e) {

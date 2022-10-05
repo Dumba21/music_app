@@ -38,6 +38,9 @@ export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
 export const LOGIN_USER_FAILURE = 'LOGIN_USER_FAILURE';
 export const CLEAR_LOGIN_ERRORS = 'CLEAR_LOGIN_ERRORS';
 
+export const clearLoginErrors = () => ({type: CLEAR_LOGIN_ERRORS});
+
+
 const loginUserRequest = () => ({type: LOGIN_USER_REQUEST});
 const loginUserSuccess = user => ({type: LOGIN_USER_SUCCESS, payload: user});
 const loginUserFailure = error => ({type: LOGIN_USER_FAILURE, payload: error});

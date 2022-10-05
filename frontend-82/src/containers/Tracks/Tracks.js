@@ -45,7 +45,7 @@ const Tracks = ({match}) => {
                         />
                     </Backdrop>
                     :
-                    <Grid container flex={'row'} justifyContent={"start"} spacing={5}
+                    <Grid container flexDirection={'row'} spacing={5}
                           sx={{margin: "auto", width: '100%'}}>
                         {tracks.map(e => (
                             <Grid onClick={() => dispatch(fetchPostTrack(e._id))} item key={e._id} md={5} xl={4} sm={9}

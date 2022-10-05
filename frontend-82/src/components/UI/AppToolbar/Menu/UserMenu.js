@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Button, Menu, MenuItem} from "@mui/material";
 import {useDispatch} from "react-redux";
 import {logoutUser} from "../../../../store/actions/usersActions";
-import {Link} from "react-router-dom";
+import {historyPush} from "../../../../store/actions/historyActions";
 
 const UserMenu = ({user}) => {
 
@@ -16,6 +16,11 @@ const UserMenu = ({user}) => {
 
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const trackHistoryFun = () => {
+        handleClose();
+        dispatch(historyPush('/track_history'));
     };
 
 
@@ -40,7 +45,7 @@ const UserMenu = ({user}) => {
                     'aria-labelledby': 'basic-button',
                 }}
             >
-                <MenuItem onClick={handleClose}><Link to={'/track_history'}>Tracks History</Link></MenuItem>
+                <MenuItem onClick={() => trackHistoryFun()}>Track History</MenuItem>
                 <MenuItem onClick={() => dispatch(logoutUser())}>Logout</MenuItem>
             </Menu>
         </>

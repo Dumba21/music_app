@@ -5,7 +5,7 @@ import {LockOpenOutlined} from "@mui/icons-material";
 import {Alert, Avatar, Container, Grid, Link, Typography} from "@mui/material";
 import {makeStyles} from "tss-react/mui";
 
-import {clearRegisterErrors, loginUser} from "../../store/actions/usersActions";
+import {clearLoginErrors, loginUser} from "../../store/actions/usersActions";
 import FormElement from "../../components/UI/Form/FormInput";
 import ButtonWithProgress from "../../components/ButtonWithProgress/ButtonWithProgress";
 
@@ -55,7 +55,7 @@ const Login = () => {
 
     useEffect(() => {
         return () => {
-            dispatch(clearRegisterErrors());
+            dispatch(clearLoginErrors());
         }
     }, [dispatch]);
 

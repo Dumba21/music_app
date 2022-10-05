@@ -11,7 +11,8 @@ router.get('/', auth, async (req, res) => {
         const tracks = await TrackHistory
             .find({user: req.user._id})
             .populate('user track')
-            .sort({date: 1});
+            .sort({datetime: -1});
+
 
         res.send(tracks);
     } catch (e) {

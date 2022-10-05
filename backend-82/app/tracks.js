@@ -13,11 +13,11 @@ router.get('/', async (req, res) => {
                     }
                 })
                 .sort({number: 1});
-            res.send(track);
-        } else {
-            const track = await Tracks.find();
-            res.send(track);
+            return res.send(track);
         }
+        const track = await Tracks.find();
+        res.send(track);
+
     } catch (e) {
         res.sendStatus(500);
     }
@@ -38,7 +38,7 @@ router.post('/', async (req, res) => {
         await newTrack.save();
         res.send(newTrack);
     } catch (e) {
-        res.sendStatus(500);
+        res.status(400).send({error: e.errors});
     }
 });
 
