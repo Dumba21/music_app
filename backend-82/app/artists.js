@@ -7,7 +7,7 @@ const image = require('../middleware/image');
 
 router.get('/', async (req, res) => {
     try {
-        const artists = await Artists.find({published: true});
+        const artists = await Artists.find({published: true})
         res.send(artists);
     } catch (e) {
         res.sendStatus(500);

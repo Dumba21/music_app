@@ -1,4 +1,5 @@
 import axiosApi from "../../axiosApi";
+import {historyPush} from "./historyActions";
 
 
 export const FETCH_ALBUMS_REQUEST = 'FETCH_ALBUMS_REQUEST';
@@ -25,3 +26,24 @@ export const fetchAlbums = id => {
         }
     };
 };
+
+export const NEW_ALBUM_REQUEST = 'NEW_ALBUM_REQUEST';
+export const NEW_ALBUM_SUCCESS = 'NEW_ALBUM_SUCCESS';
+export const NEW_ALBUM_FAILURE = 'NEW_ALBUM_FAILURE';
+
+const newAlbumRequest = () => ({type:NEW_ALBUM_REQUEST});
+const newAlbumSuccess = () => ({type:NEW_ALBUM_SUCCESS});
+const newAlbumFailure = error => ({type:NEW_ALBUM_FAILURE,payload:error});
+
+export const postNewAlbum = data => {
+    return async dispatch => {
+        try{
+            dispatch(newAlbumRequest());
+            await axiosApi.post('/albums', data);
+            dispatch(newAlbumSuccess());
+            dispatch(historyPush('/'));
+        } catch (e) {
+            dispatch(newAlbumFailure(e));
+        }
+    }
+}

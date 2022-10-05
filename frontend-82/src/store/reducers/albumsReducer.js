@@ -1,4 +1,9 @@
-import {FETCH_ALBUMS_FAILURE, FETCH_ALBUMS_REQUEST, FETCH_ALBUMS_SUCCESS} from "../actions/albumsActions";
+import {
+    FETCH_ALBUMS_FAILURE,
+    FETCH_ALBUMS_REQUEST,
+    FETCH_ALBUMS_SUCCESS, NEW_ALBUM_FAILURE,
+    NEW_ALBUM_REQUEST, NEW_ALBUM_SUCCESS
+} from "../actions/albumsActions";
 
 const initialState = {
     data:null,
@@ -14,6 +19,14 @@ const albumsReducer = (state = initialState, action) => {
             return {...state, loading: false, data: action.payload};
         case FETCH_ALBUMS_FAILURE:
             return {...state, loading: false, error: action.payload};
+
+        case NEW_ALBUM_REQUEST:
+            return {...state, loading: true, error: null};
+        case NEW_ALBUM_SUCCESS:
+            return {...state, loading: false};
+        case NEW_ALBUM_FAILURE:
+            return {...state, loading: false, error: action.payload};
+            
         default:
             return state;
     }

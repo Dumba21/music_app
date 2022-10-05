@@ -19,12 +19,14 @@ const artistsReducer = (state = initialState, action) => {
             return {...state, loading: false, data: action.payload};
         case FETCH_ARTISTS_FAILURE:
             return {...state, loading: false, error: action.payload};
+
         case NEW_ARTIST_REQUEST:
             return {...state, loading: true, error: null};
         case NEW_ARTIST_SUCCESS:
             return {...state, loading: false};
         case NEW_ARTIST_FAILURE:
             return {...state, loading: false, error: action.payload};
+
         default:
             return state;
     }

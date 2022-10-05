@@ -39,7 +39,6 @@ const AppToolbar = ({color}) => {
                             <Link to="/" className={classes.mainLink}>
                                 home
                             </Link>
-                            <Link to="/artists/new">Add</Link>
                         </Typography>
                         <Grid item>
                             {user ? <UserMenu user={user}/> : <Anonymous/>}
