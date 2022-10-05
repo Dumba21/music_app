@@ -11,7 +11,7 @@ const NewAlbum = () => {
 
     useEffect(() => {
         dispatch(fetchArtists());
-    }, []);
+    }, [dispatch]);
 
     const [state, setState] = useState({
         name: "",

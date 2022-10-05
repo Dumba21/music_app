@@ -9,6 +9,7 @@ import Register from "./containers/Register/Register";
 import TrackHistory from "./containers/Tracks_History/Tracks_History";
 import NewArtist from "./containers/NewArtist/NewArtist";
 import NewAlbum from "./containers/NewAlbum/NewAlbum";
+import NewTrack from "./containers/NewTrack/NewTrack";
 
 const App = () => {
     const location = useLocation();
@@ -41,13 +42,14 @@ const App = () => {
             color={color}>
             <Switch>
                 <Route path={'/'} exact component={Home}/>
-                <Route path={'/albums/new'} component={NewAlbum}/>
-                <Route path={'/artists/new'} component={NewArtist}/>
+                <Route path={'/new/album'} component={NewAlbum}/>
+                <Route path={'/new/artist'} component={NewArtist}/>
+                <Route path={'/new/track'} component={NewTrack}/>
                 <Route path='/albums/:id' component={Albums}/>
                 <Route path={'/tracks/:id'} component={Tracks}/>
-                <Route path={'/login'} component={Login}/>
-                <Route path={'/register'} component={Register}/>
                 <Route path={'/track_history'} component={TrackHistory}/>
+                <Route path={'/register'} component={Register}/>
+                <Route path={'/login'} component={Login}/>
             </Switch>
         </Layout>
     );

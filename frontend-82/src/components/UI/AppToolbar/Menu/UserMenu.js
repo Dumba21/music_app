@@ -25,14 +25,17 @@ const UserMenu = ({user}) => {
 
     const addNewArtist = () => {
         handleClose();
-        dispatch(historyPush('/artists/new'));
+        dispatch(historyPush('/new/artist'));
     };
 
     const addNewAlbum = () => {
         handleClose();
-        dispatch(historyPush('/albums/new'));
+        dispatch(historyPush('/new/album'));
     };
-
+    const addNewTrack = () => {
+        handleClose();
+        dispatch(historyPush('/new/track'));
+    };
 
     return (
         <>
@@ -56,8 +59,9 @@ const UserMenu = ({user}) => {
                 }}
             >
                 <MenuItem onClick={() => trackHistoryFun()}>Track History</MenuItem>
-                <MenuItem onClick={e => addNewArtist(e)}>Add new Artist</MenuItem>
-                <MenuItem onClick={e => addNewAlbum(e)}>Add new Album</MenuItem>
+                <MenuItem onClick={() => addNewArtist()}>Add new Artist</MenuItem>
+                <MenuItem onClick={() => addNewAlbum()}>Add new Album</MenuItem>
+                <MenuItem onClick={() => addNewTrack()}>Add new Track</MenuItem>
                 <MenuItem onClick={() => dispatch(logoutUser())}>Logout</MenuItem>
             </Menu>
         </>
