@@ -16,7 +16,7 @@ const TrackSchema = new Schema({
         required:true,
     },
     number:{
-        type:String,
+        type:Number,
         required:true,
         validate: {
             validator: async value => {

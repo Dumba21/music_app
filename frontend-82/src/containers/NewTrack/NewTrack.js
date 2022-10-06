@@ -3,6 +3,7 @@ import {Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField} from
 import {useDispatch, useSelector} from "react-redux";
 import {fetchArtists} from "../../store/actions/artistsActions";
 import {fetchAlbums} from "../../store/actions/albumsActions";
+import {postNewTrack} from "../../store/actions/tracksActions";
 
 
 const NewTrack = () => {
@@ -39,14 +40,8 @@ const NewTrack = () => {
 
     const submitFormHandler = e => {
         e.preventDefault();
-        //
-        // const formData = new FormData();
-        // Object.keys(state).forEach(key => {
-        //     formData.append(key, state[key]);
-        // });
-        // dispatch(postNewAlbum(formData));
 
-        console.log({artist, state})
+        dispatch(postNewTrack(state));
     };
 
     const inputChangeHandler = e => {

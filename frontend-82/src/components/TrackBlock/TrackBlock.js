@@ -2,13 +2,12 @@ import React from 'react';
 import {Card, CardContent, Grid} from "@mui/material";
 import {makeStyles} from "tss-react/mui";
 
-const TrackBlock = ({name, duration, number}) => {
+const TrackBlock = ({name, duration, number,clickOn}) => {
 
     const useStyles = makeStyles()(() => ({
         block: {
             height: 150,
             width: 300,
-            margin: '0 auto 50px auto',
             textDecoration: "none",
             '&:hover': {
                 color: '#b55909'
@@ -23,9 +22,11 @@ const TrackBlock = ({name, duration, number}) => {
             container
             direction="row"
             justifyContent="center"
+            onClick={clickOn}
+            sx={{cursor:'pointer',border:'2px solid white',marginBottom:5}}
         >
             <Card className={classes.block}>
-                <CardContent sx={{width: '300px', textAlign: 'center'}}>
+                <CardContent sx={{ textAlign: 'center'}}>
                     <strong style={{fontSize: '20px', textTransform: "uppercase"}}>
                         {name}
                     </strong>

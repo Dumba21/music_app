@@ -37,7 +37,7 @@ router.post('/sessions', async (req, res) => {
             user.generateToken();
             const token = user.token
             await user.save({validateBeforeSave: false});
-            res.send({username: user.username, token});
+            res.send({username: user.username, token,role:user.role});
         }
     } catch (e) {
         res.status(500);
@@ -52,7 +52,7 @@ router.delete('/sessions', async (req, res) => {
 
     const user = await User.findOne({token});
 
-    if(!user) return res.send(success);
+    if (!user) return res.send(success);
 
     user.generateToken();
     await user.save({validateBeforeSave: false});

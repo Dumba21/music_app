@@ -3,12 +3,22 @@ const router = express.Router();
 const Artists = require('../models/Artist');
 
 const image = require('../middleware/image');
-
+const User = require("../models/User");
 
 router.get('/', async (req, res) => {
     try {
-        const artists = await Artists.find({published: true})
-        res.send(artists);
+        const token = req.get('Authorization');
+        const user = await User.findOne({token});
+
+        if (user === null || user.role === 'user') {
+
+            const artists = await Artists.find({published: true});
+            res.send(artists);
+        } else {
+
+            const artists = await Artists.find();
+            return res.send(artists);
+        }
     } catch (e) {
         res.sendStatus(500);
     }
@@ -51,6 +61,19 @@ router.post('/', image.single('image'), async (req, res) => {
     } catch (e) {
         res.sendStatus(500);
     }
+});
+
+router.delete('/:id', async (req, res) => {
+
+    const {id} = req.params;
+    const findOne = await Artists.findById(id);
+
+    if (!findOne) {
+        return res.status(401).send({message:'Not found'})
+    }
+
+    await Artists.deleteOne(findOne);
+    res.send({message:'Success'})
 });
 
 module.exports = router;

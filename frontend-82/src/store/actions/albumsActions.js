@@ -45,5 +45,27 @@ export const postNewAlbum = data => {
         } catch (e) {
             dispatch(newAlbumFailure(e));
         }
+    };
+};
+
+
+export const DELETE_ALBUM_REQUEST = 'DELETE_ALBUM_REQUEST';
+export const DELETE_ALBUM_SUCCESS = 'DELETE_ALBUM_SUCCESS';
+export const DELETE_ALBUM_FAILURE = 'DELETE_ALBUM_FAILURE';
+
+const deleteAlbumRequest = () => ({type: DELETE_ALBUM_REQUEST});
+const deleteAlbumSuccess = () => ({type: DELETE_ALBUM_SUCCESS});
+const deleteAlbumFailure = error => ({type: DELETE_ALBUM_FAILURE, payload: error});
+
+export const deleteAlbum = data => {
+    return async dispatch => {
+        try {
+            dispatch(deleteAlbumRequest());
+            await axiosApi.delete(`/albums/${data}`);
+            dispatch(deleteAlbumSuccess());
+            dispatch(historyPush('/'));
+        } catch (e) {
+            dispatch(deleteAlbumFailure(e));
+        }
     }
 }

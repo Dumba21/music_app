@@ -13,6 +13,8 @@ const NewAlbum = () => {
         dispatch(fetchArtists());
     }, [dispatch]);
 
+
+
     const [state, setState] = useState({
         name: "",
         releaseDate: 0,

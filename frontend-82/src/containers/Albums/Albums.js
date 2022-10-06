@@ -1,19 +1,25 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {fetchAlbums} from "../../store/actions/albumsActions";
-import {Backdrop, Grid, Typography} from "@mui/material";
+import {deleteAlbum, fetchAlbums} from "../../store/actions/albumsActions";
+import {Backdrop, Button, Grid, Typography} from "@mui/material";
 import {Bars} from "react-loader-spinner";
 import AlbumBlock from "../../components/AlbumBlock/AlbumBlock";
 
 const Albums = ({match}) => {
     const albums = useSelector(state => state.albumsState.data);
     const loading = useSelector(state => state.albumsState.loading);
+    const user = useSelector(state => state.usersState.user);
     const dispatch = useDispatch();
 
 
     useEffect(() => {
         dispatch(fetchAlbums(match.params.id));
-    }, [dispatch,match]);
+    }, [dispatch, match]);
+
+    const deleteHandler = async (e) => {
+        await dispatch(deleteAlbum(e._id));
+        dispatch(fetchAlbums());
+    }
 
     let albumsComponents = (
         <Typography sx={{
@@ -46,6 +52,20 @@ const Albums = ({match}) => {
                             <Grid item key={e._id} md={5} xl={4} sm={9} xs={10}>
                                 <AlbumBlock id={e._id} title={e.name} cardImage={e.image} name={e.name}
                                             releaseDate={e.releaseDate} image={e.image}/>
+                                {user && user.role === 'admin' ?
+                                    <div style={{display: 'flex', justifyContent: 'center'}}>
+                                        <Button variant="filled" sx={{background: 'white'}}
+                                                onClick={() => deleteHandler(e)}>delete</Button>
+                                        {e.published === false &&
+                                            <>
+                                                <Button variant="filled" sx={{background: 'white'}}
+                                                        onClick={() => console.log('fsdf')}>publish</Button>
+                                                <p style={{background: 'black', color: '#fff', padding: 10}}>NOT
+                                                    PUBLISHED</p>
+                                            </>}
+                                    </div>
+                                    : null}
+
                             </Grid>
                         ))}
                     </Grid>
