@@ -25,7 +25,7 @@ const useStyles = makeStyles()(theme => ({
     },
 }));
 
-const AppToolbar = ({color}) => {
+const AppToolbar = ({children, color}) => {
     const {classes} = useStyles();
     const user = useSelector(state => state.usersState.user);
 
@@ -40,6 +40,7 @@ const AppToolbar = ({color}) => {
                                 home
                             </Link>
                         </Typography>
+                        {children}
                         <Grid item>
                             {user ? <UserMenu user={user}/> : <Anonymous/>}
                         </Grid>

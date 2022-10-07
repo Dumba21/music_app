@@ -14,7 +14,6 @@ const NewAlbum = () => {
     }, [dispatch]);
 
 
-
     const [state, setState] = useState({
         name: "",
         releaseDate: 0,
@@ -62,8 +61,8 @@ const NewAlbum = () => {
                 rowSpacing={2}
             >
 
-                <FormControl fullWidth style={{marginTop: '15px'}}>
-                    <InputLabel id="category">Category</InputLabel>
+                <FormControl fullWidth style={{marginTop: '15px'}} required>
+                    <InputLabel id="artist">Artist</InputLabel>
                     <Select
                         labelId="artist"
                         id="artist"

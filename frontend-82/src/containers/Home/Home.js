@@ -1,7 +1,7 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
-import {deleteArtist, fetchArtists} from "../../store/actions/artistsActions";
+import {deleteArtist, fetchArtists, publishArtist} from "../../store/actions/artistsActions";
 import {Backdrop, Button, Grid, Typography} from "@mui/material";
 import {Bars} from "react-loader-spinner";
 import ArtistsBlock from "../../components/ArtistsBlock/ArtistsBlock";
@@ -14,11 +14,16 @@ const Home = () => {
 
     useEffect(() => {
         dispatch(fetchArtists());
-    }, [dispatch]);
+    }, [dispatch,user]);
 
     const deleteHandler = async (e) => {
         await dispatch(deleteArtist(e._id));
         dispatch(fetchArtists());
+    }
+
+    const publishHandler = async (e) => {
+        await dispatch(publishArtist(e._id))
+        dispatch(fetchArtists())
     }
 
     return artists && (
@@ -65,7 +70,7 @@ const Home = () => {
                                     {e.published === false &&
                                         <>
                                             <Button variant="filled" sx={{background: 'white'}}
-                                                    onClick={() => console.log('fsdf')}>publish</Button>
+                                                    onClick={() => publishHandler(e)}>publish</Button>
                                             <p style={{background: 'black', color: '#fff', padding: 10}}>NOT
                                                 PUBLISHED</p>
                                         </>}

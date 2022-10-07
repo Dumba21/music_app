@@ -5,20 +5,32 @@ const Artists = require('../models/Artist');
 const image = require('../middleware/image');
 const User = require("../models/User");
 
+const auth = require('../middleware/auth');
+const permit = require('../middleware/permit');
+
 router.get('/', async (req, res) => {
     try {
         const token = req.get('Authorization');
         const user = await User.findOne({token});
 
-        if (user === null || user.role === 'user') {
+        if (user === null) {
 
             const artists = await Artists.find({published: true});
-            res.send(artists);
-        } else {
-
-            const artists = await Artists.find();
             return res.send(artists);
         }
+
+        if (user.role === 'user') {
+            const published = await Artists.find({published: true});
+            const notPublished = await Artists
+                .find({published: false})
+                .find({user: user._id});
+
+            return res.send({published, notPublished});
+        }
+
+        const artists = await Artists.find();
+        return res.send(artists);
+
     } catch (e) {
         res.sendStatus(500);
     }
@@ -38,7 +50,7 @@ router.get('/:id', async (req, res) => {
 });
 
 
-router.post('/', image.single('image'), async (req, res) => {
+router.post('/', auth, image.single('image'), async (req, res) => {
 
     if (!req.body.name || !req.body.info) {
         return res.status(400).send('Data is not valid');
@@ -47,7 +59,8 @@ router.post('/', image.single('image'), async (req, res) => {
     const artist = {
         name: req.body.name,
         image: null,
-        info: req.body.info
+        info: req.body.info,
+        user: req.user._id
     };
 
     if (req.file) {
@@ -69,11 +82,28 @@ router.delete('/:id', async (req, res) => {
     const findOne = await Artists.findById(id);
 
     if (!findOne) {
-        return res.status(401).send({message:'Not found'})
+        return res.status(401).send({message: 'Not found'})
     }
 
     await Artists.deleteOne(findOne);
-    res.send({message:'Success'})
+    res.send({message: 'Success'})
 });
+
+router.post('/:id/publish', auth, permit('admin'), async (req, res) => {
+    try {
+        const {id} = req.params;
+        const artist = await Artists.findById(id);
+
+        if (!artist) {
+            return res.status(401).send({message: 'Artist not found'})
+        }
+
+        artist.published = true;
+        artist.save()
+        res.send('success');
+    } catch (e) {
+        res.send(500);
+    }
+})
 
 module.exports = router;

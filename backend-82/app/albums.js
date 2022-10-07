@@ -5,34 +5,62 @@ const Album = require('../models/Album');
 const image = require('../middleware/image');
 const User = require("../models/User");
 
+const auth = require('../middleware/auth');
+const permit = require("../middleware/permit");
+
 
 router.get('/', async (req, res) => {
     try {
         const token = req.get('Authorization');
         const user = await User.findOne({token});
         if (req.query.artist) {
-            if (user === null || user.role === 'user') {
+            if (user === null) {
 
                 const albums = await Album.find({artist: req.query.artist})
                     .find({published: true})
                     .populate('artist', 'name info')
                     .sort({releaseDate: 1});
                 return res.send(albums);
-            } else {
-                const albums = await Album.find({artist: req.query.artist})
+
+            }
+
+            if (user.role === 'user') {
+                const published = await Album.find({artist: req.query.artist})
+                    .find({published: true})
                     .populate('artist', 'name info')
                     .sort({releaseDate: 1});
+                const notPublished = await Album.find({artist: req.query.artist})
+                    .find({published: false})
+                    .find({user: user._id})
+                    .populate('artist', 'name info')
+                    .sort({releaseDate: 1});
+
+                return res.send({published, notPublished});
+            }
+
+            const albums = await Album.find({artist: req.query.artist})
+                .populate('artist', 'name info')
+                .sort({releaseDate: 1});
+            return res.send(albums);
+
+
+        } else {
+            if (user === null) {
+                const albums = await Album.find({published: true});
                 return res.send(albums);
             }
 
-        } else {
-            if (user === null || user.role === 'user') {
-                const albums = await Album.find({published: true});
-                return res.send(albums);
-            } else {
-                const albums = await Album.find();
-                return res.send(albums);
+            if (user.role === 'user') {
+                const published = await Album.find({published: true});
+                const notPublished = await Album
+                    .find({published: false})
+                    .find({user: user._id});
+                return res.send({published, notPublished});
             }
+
+            const albums = await Album.find();
+            return res.send(albums);
+
         }
     } catch (e) {
         res.sendStatus(500);
@@ -55,7 +83,7 @@ router.get('/:id', async (req, res) => {
 });
 
 
-router.post('/', image.single('image'), async (req, res) => {
+router.post('/', auth, image.single('image'), async (req, res) => {
     if (!req.body.name || !req.body.artist || !req.body.releaseDate) {
         return res.status(400).send('Data is not valid');
     }
@@ -64,20 +92,38 @@ router.post('/', image.single('image'), async (req, res) => {
         artist: req.body.artist,
         releaseDate: req.body.releaseDate,
         image: null,
+        user: req.user._id
     };
 
-    if (req.filename) {
+    if (req.file) {
         album.image = 'uploads/' + req.file.filename;
     }
 
     try {
         const newAlbum = new Album(album);
         await newAlbum.save();
-        res.send(newAlbum);
+        res.send(album);
     } catch (e) {
         res.sendStatus(500);
     }
 });
+
+router.post('/:id/publish', auth, permit('admin'), async (req, res) => {
+    try {
+        const {id} = req.params;
+        const album = await Album.findById(id);
+
+        if (!album) {
+            return res.status(401).send({message: 'Album not found'})
+        }
+
+        album.published = true;
+        album.save()
+        res.send('success');
+    } catch (e) {
+        res.send(500);
+    }
+})
 
 router.delete('/:id', async (req, res) => {
 
@@ -85,11 +131,11 @@ router.delete('/:id', async (req, res) => {
     const findOne = await Album.findById(id);
 
     if (!findOne) {
-        return res.status(401).send({message:'Not found'})
+        return res.status(401).send({message: 'Not found'})
     }
 
     await Album.deleteOne(findOne);
-    res.send({message:'Success'})
+    res.send({message: 'Success'})
 });
 
 

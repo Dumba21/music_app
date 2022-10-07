@@ -70,10 +70,13 @@ const TrackHistory = ({match}) => {
                         return (
                             <ListItem key={elem._id} className={classes.listItem}>
                                 <p><b>Name: </b>{elem.user.username}</p>
-                                <p><b>Song: </b> {elem.track.name}</p>
-                                <p>{time}<b style={{marginLeft:'30px'}}>{date}</b></p>
+                                {elem.track ?
+                                    <p><b>Song: </b> {elem.track.name}</p>
+                                    : <p>This song was deleted</p>
+                                }
+                                <p>{time}<b style={{marginLeft: '30px'}}>{date}</b></p>
                             </ListItem>
-                        )
+                        );
                     })}
                 </List>
             </Grid>

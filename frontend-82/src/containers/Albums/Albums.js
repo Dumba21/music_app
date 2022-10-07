@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {deleteAlbum, fetchAlbums} from "../../store/actions/albumsActions";
+import {deleteAlbum, fetchAlbums, publishAlbum} from "../../store/actions/albumsActions";
 import {Backdrop, Button, Grid, Typography} from "@mui/material";
 import {Bars} from "react-loader-spinner";
 import AlbumBlock from "../../components/AlbumBlock/AlbumBlock";
@@ -18,8 +18,13 @@ const Albums = ({match}) => {
 
     const deleteHandler = async (e) => {
         await dispatch(deleteAlbum(e._id));
-        dispatch(fetchAlbums());
-    }
+        dispatch(fetchAlbums(match.params.id));
+    };
+
+    const publishHandler = async (e) => {
+        await dispatch(publishAlbum(e._id));
+        dispatch(fetchAlbums(match.params.id));
+    };
 
     let albumsComponents = (
         <Typography sx={{
@@ -44,14 +49,22 @@ const Albums = ({match}) => {
                         fontWeight: 'bold',
                         fontSize: '33px'
                     }} textAlign={"center"} variant="h5">
-                        {albums[0].artist.name ? albums[0].artist.name : <p>Sorry name was not found</p>}
+                        {albums[0].artist.name}
                     </Typography>
                     <Grid container flex={'row'} justifyContent={"start"} spacing={5}
                           sx={{margin: "auto", width: '100%'}}>
                         {albums.map(e => (
-                            <Grid item key={e._id} md={5} xl={4} sm={9} xs={10}>
-                                <AlbumBlock id={e._id} title={e.name} cardImage={e.image} name={e.name}
-                                            releaseDate={e.releaseDate} image={e.image}/>
+                            <Grid
+                                item key={e._id} md={5} xl={4} sm={9} xs={10}
+                            >
+                                <AlbumBlock
+                                    id={e._id}
+                                    title={e.name}
+                                    cardImage={e.image}
+                                    name={e.name}
+                                    releaseDate={e.releaseDate}
+                                    image={e.image}
+                                />
                                 {user && user.role === 'admin' ?
                                     <div style={{display: 'flex', justifyContent: 'center'}}>
                                         <Button variant="filled" sx={{background: 'white'}}
@@ -59,7 +72,7 @@ const Albums = ({match}) => {
                                         {e.published === false &&
                                             <>
                                                 <Button variant="filled" sx={{background: 'white'}}
-                                                        onClick={() => console.log('fsdf')}>publish</Button>
+                                                        onClick={() => publishHandler(e)}>publish</Button>
                                                 <p style={{background: 'black', color: '#fff', padding: 10}}>NOT
                                                     PUBLISHED</p>
                                             </>}

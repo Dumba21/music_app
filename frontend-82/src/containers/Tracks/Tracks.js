@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {Backdrop, Button, Grid, Typography} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteTrack, fetchTracks} from "../../store/actions/tracksActions";
+import {deleteTrack, fetchTracks, publishTrack} from "../../store/actions/tracksActions";
 import {Bars} from "react-loader-spinner";
 import TrackBlock from "../../components/TrackBlock/TrackBlock";
 import {fetchPostTrack} from "../../store/actions/trackHistoryActions";
@@ -21,6 +21,10 @@ const Tracks = ({match}) => {
         dispatch(fetchTracks(match.params.id));
     };
 
+    const publishHandler = async (e) => {
+        await dispatch(publishTrack(e._id));
+        dispatch(fetchTracks(match.params.id));
+    };
 
     return (
         <Grid container direction="column" spacing={2}>
@@ -61,7 +65,7 @@ const Tracks = ({match}) => {
                                         <Button variant="filled" sx={{background:'white'}} onClick={() => deleteHandler(e)}>delete</Button>
                                         {e.published === false &&
                                             <>
-                                        <Button variant="filled" sx={{background:'white'}} onClick={() => console.log('fsdf')}>publish</Button>
+                                        <Button variant="filled" sx={{background:'white'}} onClick={() => publishHandler(e)}>publish</Button>
                                          <p style={{background: 'black',color:'#fff',padding:10}}>NOT PUBLISHED</p>
                                             </>}
                                     </div>

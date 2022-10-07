@@ -2,22 +2,22 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const TrackSchema = new Schema({
-    name:{
-        type:String,
-        required:true
+    name: {
+        type: String,
+        required: true
     },
-    album:{
-        type:Schema.Types.ObjectId,
+    album: {
+        type: Schema.Types.ObjectId,
         ref: 'Album',
         required: true
     },
-    duration:{
-        type:String,
-        required:true,
+    duration: {
+        type: String,
+        required: true,
     },
-    number:{
-        type:Number,
-        required:true,
+    number: {
+        type: Number,
+        required: true,
         validate: {
             validator: async value => {
                 const track = await Track.findOne({number: value});
@@ -27,10 +27,15 @@ const TrackSchema = new Schema({
             message: 'Number of the track should be unique',
         }
     },
-    published:{
-        type:Boolean,
-        required:true,
+    published: {
+        type: Boolean,
+        required: true,
         default: false,
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: 'true',
     }
 });
 
