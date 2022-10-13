@@ -45,6 +45,7 @@ const Register = () => {
         email: '',
         password: '',
         displayName: '',
+        avatarImage: '',
     });
 
     useEffect(() => {
@@ -102,6 +103,14 @@ const Register = () => {
                         label="Display name"
                         name="displayName"
                         value={user.displayName}
+                        onChange={inputChangeHandler}
+                        error={getFieldError('displayName')}
+                    />
+                    <FormElement
+                        required={true}
+                        label="Avatar link"
+                        name="avatarImage"
+                        value={user.avatarImage}
                         onChange={inputChangeHandler}
                         error={getFieldError('displayName')}
                     />

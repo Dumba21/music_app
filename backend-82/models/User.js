@@ -39,6 +39,9 @@ const UserSchema = new Schema({
         required:true,
     },
     facebookId:String,
+    avatarImage:{
+        type:String,
+    }
 });
 
 UserSchema.pre('save', async function (next) {

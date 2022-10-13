@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Menu, MenuItem} from "@mui/material";
+import {Avatar, Button, Grid, Menu, MenuItem} from "@mui/material";
 import {useDispatch} from "react-redux";
 import {logoutUser} from "../../../../store/actions/usersActions";
 import {historyPush} from "../../../../store/actions/historyActions";
@@ -38,7 +38,8 @@ const UserMenu = ({user}) => {
     };
 
     return (
-        <>
+        <Grid container>
+            <Avatar src={user.avatarImage}/>
             <Button
                 id="basic-button"
                 color="inherit"
@@ -64,7 +65,7 @@ const UserMenu = ({user}) => {
                 <MenuItem onClick={() => addNewTrack()}>Add new Track</MenuItem>
                 <MenuItem onClick={() => dispatch(logoutUser())}>Logout</MenuItem>
             </Menu>
-        </>
+        </Grid>
     );
 };
 

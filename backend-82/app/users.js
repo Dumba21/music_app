@@ -8,13 +8,13 @@ const router = express.Router();
 router.post('/', async (req, res) => {
     try {
 
-        const {email, password, displayName} = req.body;
+        const {email, password, displayName,avatarImage} = req.body;
 
-        if (!email || !password || !displayName) {
+        if (!email || !password || !displayName || !avatarImage) {
             res.status(400).send({error: 'Data not valid'});
         }
 
-        const userData = {email, password, displayName};
+        const userData = {email, password, displayName,avatarImage};
         const user = new User(userData);
 
         user.generateToken();
@@ -71,6 +71,7 @@ router.post('/facebookLogin', async (req, res) => {
                 password: nanoid(),
                 facebookId: req.body.id,
                 displayName: req.body.name,
+                avatarImage:req.body.picture.data.url,
             });
         }
         user.generateToken();
