@@ -42,8 +42,9 @@ const Register = () => {
     const loading = useSelector(state => state.usersState.registerLoading);
 
     const [user, setUser] = useState({
-        username: '',
+        email: '',
         password: '',
+        displayName: '',
     });
 
     useEffect(() => {
@@ -90,11 +91,19 @@ const Register = () => {
                 >
                     <FormElement
                         required={true}
-                        label="Username"
-                        name="username"
-                        value={user.username}
+                        label="Email"
+                        name="email"
+                        value={user.email}
                         onChange={inputChangeHandler}
-                        error={getFieldError('username')}
+                        error={getFieldError('email')}
+                    />
+                    <FormElement
+                        required={true}
+                        label="Display name"
+                        name="displayName"
+                        value={user.displayName}
+                        onChange={inputChangeHandler}
+                        error={getFieldError('displayName')}
                     />
 
                     <FormElement

@@ -8,6 +8,7 @@ import {makeStyles} from "tss-react/mui";
 import {clearLoginErrors, loginUser} from "../../store/actions/usersActions";
 import FormElement from "../../components/UI/Form/FormInput";
 import ButtonWithProgress from "../../components/ButtonWithProgress/ButtonWithProgress";
+import FacebookLogin from "../../components/FacebookLogin/FacebookLogin";
 
 
 const useStyles = makeStyles()(theme => ({
@@ -49,7 +50,7 @@ const Login = () => {
     const loading = useSelector(state => state.usersState.loginLoading);
 
     const [user, setUser] = useState({
-        username: '',
+        email: '',
         password: '',
     });
 
@@ -93,9 +94,9 @@ const Login = () => {
                 >
                     <FormElement
                         required={true}
-                        label="Username"
-                        name="username"
-                        value={user.username}
+                        label="Email"
+                        name="email"
+                        value={user.email}
                         onChange={inputChangeHandler}
                     />
                     <FormElement
@@ -119,6 +120,9 @@ const Login = () => {
                         >
                             Sign Up
                         </ButtonWithProgress>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <FacebookLogin/>
                     </Grid>
                 </Grid>
                 <Grid container justifyContent="flex-end">
