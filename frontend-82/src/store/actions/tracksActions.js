@@ -16,13 +16,7 @@ export const fetchTracks = id => {
             const {data} = await axiosApi.get(`/tracks?album=${id}`);
 
             if (data) {
-                if (data.notPublished) {
-                    const result = data.published;
-                    data.notPublished.map(elem => {
-                        result.push(elem)
-                    })
-                    return dispatch(fetchTracksSuccess(result));
-                }
+
                 dispatch(fetchTracksSuccess(data));
             }
         } catch (e) {
@@ -78,13 +72,13 @@ export const PUBLISH_TRACK_REQUEST = 'PUBLISH_TRACK_REQUEST';
 export const PUBLISH_TRACK_SUCCESS = 'PUBLISH_TRACK_SUCCESS';
 export const PUBLISH_TRACK_FAILURE = 'PUBLISH_TRACK_FAILURE';
 
-const publishTrackRequest = () => ({type:PUBLISH_TRACK_REQUEST});
-const publishTrackSuccess = () => ({type:PUBLISH_TRACK_SUCCESS});
-const publishTrackFailure = error => ({type:PUBLISH_TRACK_FAILURE,payload:error});
+const publishTrackRequest = () => ({type: PUBLISH_TRACK_REQUEST});
+const publishTrackSuccess = () => ({type: PUBLISH_TRACK_SUCCESS});
+const publishTrackFailure = error => ({type: PUBLISH_TRACK_FAILURE, payload: error});
 
 export const publishTrack = id => {
     return async dispatch => {
-        try{
+        try {
             dispatch(publishTrackRequest());
             await axiosApi.post(`/tracks/${id}/publish`);
             dispatch(publishTrackSuccess());

@@ -15,16 +15,8 @@ export const fetchArtists = () => {
             dispatch(fetchArtistsRequest());
             const {data} = await axiosApi.get('/artists');
             if (data) {
-                if (data.notPublished) {
-                    const result = data.published;
-                    data.notPublished.map(elem => {
-                        result.push(elem)
-                    })
-                    dispatch(fetchArtistsSuccess(result));
 
-                } else {
-                    dispatch(fetchArtistsSuccess(data))
-                }
+                dispatch(fetchArtistsSuccess(data))
             }
         } catch (e) {
             dispatch(fetchArtistsFailure(e));
@@ -77,13 +69,13 @@ export const PUBLISH_ARTIST_REQUEST = 'PUBLISH_ARTIST_REQUEST';
 export const PUBLISH_ARTIST_SUCCESS = 'PUBLISH_ARTIST_SUCCESS';
 export const PUBLISH_ARTIST_FAILURE = 'PUBLISH_ARTIST_FAILURE';
 
-const publishArtistRequest = () => ({type:PUBLISH_ARTIST_REQUEST});
-const publishArtistSuccess = () => ({type:PUBLISH_ARTIST_SUCCESS});
-const publishArtistFailure = error => ({type:PUBLISH_ARTIST_FAILURE,payload:error});
+const publishArtistRequest = () => ({type: PUBLISH_ARTIST_REQUEST});
+const publishArtistSuccess = () => ({type: PUBLISH_ARTIST_SUCCESS});
+const publishArtistFailure = error => ({type: PUBLISH_ARTIST_FAILURE, payload: error});
 
 export const publishArtist = id => {
     return async dispatch => {
-        try{
+        try {
             dispatch(publishArtistRequest());
             await axiosApi.post(`/artists/${id}/publish`);
             dispatch(publishArtistSuccess());

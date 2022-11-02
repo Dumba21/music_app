@@ -32,13 +32,9 @@ const useStyles = makeStyles()(theme => ({
         margin: theme.spacing(3, 0),
         width: '100%',
     },
-    signInButton:{
-        width: '100%',
-        background:'rgba(0,0,0,0.76)',
-        margin: theme.spacing(2,0),
-        '&:hover':{
-            background:'black'
-        }
+    notchedOutline: {
+        borderWidth: "1px",
+        borderColor: "yellow !important"
     }
 }));
 
@@ -76,7 +72,7 @@ const Login = () => {
                 <Avatar className={classes.avatar}>
                     <LockOpenOutlined/>
                 </Avatar>
-                <Typography component="h1" variant="h6">
+                <Typography style={{color:'white'}} component="h1" variant="h6">
                     Sign in
                 </Typography>
 
@@ -118,7 +114,7 @@ const Login = () => {
                             color="primary"
                             className={classes.submit}
                         >
-                            Sign Up
+                            Sign In
                         </ButtonWithProgress>
                     </Grid>
                     <Grid item xs={12}>
@@ -127,7 +123,7 @@ const Login = () => {
                 </Grid>
                 <Grid container justifyContent="flex-end">
                     <Grid item>
-                        <Link component={RouterLink} to="/register">
+                        <Link style={{color:'white'}} component={RouterLink} to="/register">
                             Or sign up
                         </Link>
                     </Grid>

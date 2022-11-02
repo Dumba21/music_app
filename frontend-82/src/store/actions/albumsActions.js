@@ -18,14 +18,6 @@ export const fetchAlbums = id => {
             const {data} = await axiosApi.get(`/albums?artist=${id}`);
             if (data) {
 
-                if (data.notPublished) {
-                    const result = data.published;
-                    data.notPublished.map(elem => {
-                        result.push(elem)
-                    })
-                    return dispatch(fetchAlbumsSuccess(result));
-                }
-
                 dispatch(fetchAlbumsSuccess(data));
             }
         } catch (e) {

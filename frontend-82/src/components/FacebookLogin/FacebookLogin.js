@@ -20,6 +20,7 @@ const FacebookLogin = () => {
             callback={facebookResponse}
             render={props => (
                 <Button
+                    style={{background:'white'}}
                     fullWidth
                     color="primary"
                     startIcon={<FacebookIcon/>}

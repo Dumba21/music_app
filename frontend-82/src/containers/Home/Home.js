@@ -11,7 +11,6 @@ const Home = () => {
     const loading = useSelector(state => state.artistsState.loading);
     const user = useSelector(state => state.usersState.user);
     const dispatch = useDispatch();
-    console.log(user);
     useEffect(() => {
         dispatch(fetchArtists());
     }, [dispatch,user]);

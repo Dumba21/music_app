@@ -21,13 +21,15 @@ const run = async () => {
         password: 'admin',
         token: nanoid(),
         role: 'admin',
-        displayName:'Admin'
+        displayName: 'Admin',
+        avatarImage:'fixtures/bob.png'
     }, {
         email: 'user@gmail.com',
         password: 'user',
         token: nanoid(),
         role: 'user',
-        displayName:'User'
+        displayName:'User',
+        avatarImage: 'fixtures/patrick.png',
     });
 
     const [the_weeknd, imagine_dragons, savage] = await Artist.create({

@@ -25,17 +25,12 @@ router.get('/', async (req, res) => {
             }
 
             if (user.role === 'user') {
-                const published = await Album.find({artist: req.query.artist})
-                    .find({published: true})
-                    .populate('artist', 'name info')
-                    .sort({releaseDate: 1});
-                const notPublished = await Album.find({artist: req.query.artist})
-                    .find({published: false})
-                    .find({user: user._id})
+                const albums = await Album
+                    .find({'$or': [{artist: req.query.artist}, {user: user._id}]})
                     .populate('artist', 'name info')
                     .sort({releaseDate: 1});
 
-                return res.send({published, notPublished});
+                return res.send(albums);
             }
 
             const albums = await Album.find({artist: req.query.artist})
@@ -51,11 +46,11 @@ router.get('/', async (req, res) => {
             }
 
             if (user.role === 'user') {
-                const published = await Album.find({published: true});
-                const notPublished = await Album
-                    .find({published: false})
-                    .find({user: user._id});
-                return res.send({published, notPublished});
+                const albums = await Album
+                    .find({'$or': [{user: user._id}, {published: true}]})
+                    .populate('artist', 'name info')
+                    .sort({releaseDate: 1});
+                return res.send(albums);
             }
 
             const albums = await Album.find();

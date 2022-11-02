@@ -4,17 +4,18 @@ const config = require('../config');
 const axios = require('axios');
 const {nanoid} = require("nanoid");
 const router = express.Router();
+const image = require('../middleware/image');
 
-router.post('/', async (req, res) => {
+router.post('/', image.single('avatarImage'), async (req, res) => {
     try {
+        const {email, password, displayName} = req.body;
 
-        const {email, password, displayName,avatarImage} = req.body;
-
-        if (!email || !password || !displayName || !avatarImage) {
+        if (!email || !password || !displayName) {
             res.status(400).send({error: 'Data not valid'});
         }
 
-        const userData = {email, password, displayName,avatarImage};
+        const userData = {email, password, displayName};
+        userData.avatarImage = 'uploads/' + req.file.filename;
         const user = new User(userData);
 
         user.generateToken();
@@ -37,7 +38,6 @@ router.post('/sessions', async (req, res) => {
                 res.status(401).send({error: 'Credentials are wrong!'});
             }
             user.generateToken();
-            const token = user.token
             await user.save({validateBeforeSave: false});
             res.send(user);
         }
@@ -71,11 +71,11 @@ router.post('/facebookLogin', async (req, res) => {
                 password: nanoid(),
                 facebookId: req.body.id,
                 displayName: req.body.name,
-                avatarImage:req.body.picture.data.url,
+                avatarImage: req.body.picture.data.url,
             });
         }
         user.generateToken();
-        await user.save({validateBeforeSave:false});
+        await user.save({validateBeforeSave: false});
 
         return res.send(user);
     } catch (e) {

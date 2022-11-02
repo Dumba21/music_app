@@ -9,6 +9,8 @@ const TrackBlock = ({name, duration, number,clickOn}) => {
             height: 150,
             width: 300,
             textDecoration: "none",
+            cursor:'pointer',
+            marginBottom:10,
             '&:hover': {
                 color: '#b55909'
             }
@@ -22,10 +24,9 @@ const TrackBlock = ({name, duration, number,clickOn}) => {
             container
             direction="row"
             justifyContent="center"
-            onClick={clickOn}
-            sx={{cursor:'pointer',border:'2px solid white',marginBottom:5}}
         >
-            <Card className={classes.block}>
+            <Card className={classes.block} onClick={clickOn}
+            >
                 <CardContent sx={{ textAlign: 'center'}}>
                     <strong style={{fontSize: '20px', textTransform: "uppercase"}}>
                         {name}

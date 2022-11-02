@@ -20,12 +20,8 @@ router.get('/', async (req, res) => {
         }
 
         if (user.role === 'user') {
-            const published = await Artists.find({published: true});
-            const notPublished = await Artists
-                .find({published: false})
-                .find({user: user._id});
-
-            return res.send({published, notPublished});
+            const artist = await Artists.find({'$or': [{user: user._id}, {published: true}]})
+            return res.send(artist);
         }
 
         const artists = await Artists.find();

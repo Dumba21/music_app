@@ -28,20 +28,29 @@ router.get('/', async (req, res) => {
             }
 
             if (user.role === 'user') {
-                const published = await Tracks
-                    .find({album: req.query.album})
-                    .find({published: true})
-                    .populate({
-                        path: 'album',
-                        populate: {
-                            path: 'artist'
-                        }
-                    })
-                    .sort({number: 1});
-                const notPublished = await Tracks
-                    .find({album: req.query.album})
-                    .find({published: false})
-                    .find({user: user._id})
+                // const published = await Tracks
+                //     .find({album: req.query.album})
+                //     .find({published: true})
+                //     .populate({
+                //         path: 'album',
+                //         populate: {
+                //             path: 'artist'
+                //         }
+                //     })
+                //     .sort({number: 1});
+                // const notPublished = await Tracks
+                //     .find({album: req.query.album})
+                //     .find({published: false})
+                //     .find({user: user._id})
+                //     .populate({
+                //         path: 'album',
+                //         populate: {
+                //             path: 'artist'
+                //         }
+                //     })
+                //     .sort({number: 1});
+                const tracks = await Tracks
+                    .find({'$or': [{album: req.query.album}, {published: true}, {user: user._id}]})
                     .populate({
                         path: 'album',
                         populate: {
@@ -50,7 +59,7 @@ router.get('/', async (req, res) => {
                     })
                     .sort({number: 1});
 
-                return res.send({published, notPublished});
+                return res.send(tracks);
             }
 
             const track = await Tracks
@@ -72,11 +81,9 @@ router.get('/', async (req, res) => {
             }
 
             if (user.role === 'user') {
-                const published = await Tracks.find({published: true});
-                const notPublished = await Tracks
-                    .find({published: false})
-                    .find({user: user._id});
-                return res.send({published, notPublished});
+
+                const albums = await Tracks.find({'$or': [{published: true}, {user: user._id}]});
+                return res.send(albums);
             }
 
             const track = await Tracks.find();

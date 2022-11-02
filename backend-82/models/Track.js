@@ -18,14 +18,6 @@ const TrackSchema = new Schema({
     number: {
         type: Number,
         required: true,
-        validate: {
-            validator: async value => {
-                const track = await Track.findOne({number: value});
-
-                if (track) return false;
-            },
-            message: 'Number of the track should be unique',
-        }
     },
     published: {
         type: Boolean,

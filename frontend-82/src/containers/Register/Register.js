@@ -7,6 +7,8 @@ import {LockOutlined} from "@mui/icons-material";
 import FormElement from "../../components/UI/Form/FormInput";
 import {clearRegisterErrors, registerUser} from "../../store/actions/usersActions";
 import ButtonWithProgress from "../../components/ButtonWithProgress/ButtonWithProgress";
+import FileInput from "../../components/UI/Form/FileInput/FileInput";
+import {toast} from "react-toastify";
 
 const useStyles = makeStyles()(theme => ({
     paper: {
@@ -62,8 +64,23 @@ const Register = () => {
 
     const submitFormHandler = e => {
         e.preventDefault();
+        const formData = new FormData();
 
-        dispatch(registerUser({...user}));
+        if (user.avatarImage === '') {
+           return  toast.error('Please choose avatar',{position: 'bottom-left', autoClose: 3500})
+        }
+
+        Object.keys(user).forEach(key => {
+            formData.append(key, user[key]);
+        });
+        dispatch(registerUser(formData));
+    };
+
+    const fileChangeHandler = e => {
+        const name = e.target.name;
+        const file = e.target.files[0];
+
+        setUser(prevState => ({...prevState, [name]: file}));
     };
 
     const getFieldError = fieldName => {
@@ -80,7 +97,7 @@ const Register = () => {
                 <Avatar className={classes.avatar}>
                     <LockOutlined/>
                 </Avatar>
-                <Typography component="h1" variant="h6">
+                <Typography component="h1" variant="h6" style={{color:'white'}}>
                     Sign up
                 </Typography>
 
@@ -89,6 +106,7 @@ const Register = () => {
                     onSubmit={submitFormHandler}
                     container
                     spacing={2}
+                    justifyContent={'flex-end'}
                 >
                     <FormElement
                         required={true}
@@ -106,14 +124,6 @@ const Register = () => {
                         onChange={inputChangeHandler}
                         error={getFieldError('displayName')}
                     />
-                    <FormElement
-                        required={true}
-                        label="Avatar link"
-                        name="avatarImage"
-                        value={user.avatarImage}
-                        onChange={inputChangeHandler}
-                        error={getFieldError('displayName')}
-                    />
 
                     <FormElement
                         type="password"
@@ -123,6 +133,15 @@ const Register = () => {
                         value={user.password}
                         onChange={inputChangeHandler}
                         error={getFieldError('password')}
+                    />
+
+                    <FileInput
+                        required={true}
+                        type={'file'}
+                        name="avatarImage"
+                        value={user.avatarImage}
+                        onChange={fileChangeHandler}
+                        error={getFieldError('displayName')}
                     />
 
                     <Grid item xs={12}>
@@ -143,7 +162,7 @@ const Register = () => {
 
                 <Grid container justifyContent="flex-end">
                     <Grid item>
-                        <Link component={RouterLink} to="/login">
+                        <Link style={{color:'white'}} component={RouterLink} to="/login">
                             Already have an account? Sign in
                         </Link>
                     </Grid>

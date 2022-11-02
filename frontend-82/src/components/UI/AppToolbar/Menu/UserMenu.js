@@ -3,6 +3,7 @@ import {Avatar, Button, Grid, Menu, MenuItem} from "@mui/material";
 import {useDispatch} from "react-redux";
 import {logoutUser} from "../../../../store/actions/usersActions";
 import {historyPush} from "../../../../store/actions/historyActions";
+import {apiUrl} from "../../../../config";
 
 const UserMenu = ({user}) => {
 
@@ -37,9 +38,15 @@ const UserMenu = ({user}) => {
         dispatch(historyPush('/new/track'));
     };
 
+    let cardImage = user.avatarImage;
+
+    if (user.avatarImage && (user.avatarImage.match('fixtures') || user.avatarImage.match('upload'))) {
+        cardImage = apiUrl + '/' + user.avatarImage
+    }
+
     return (
         <Grid container>
-            <Avatar src={user.avatarImage}/>
+            <Avatar src={cardImage}/>
             <Button
                 id="basic-button"
                 color="inherit"

@@ -15,6 +15,25 @@ const FormElement = ({name, value, onChange, label, error, type, required}) => {
                 error={Boolean(error)}
                 helperText={error}
                 autoComplete={name}
+                sx={{
+                    "& .MuiInputLabel-root": {color: 'white'},
+                    "& .MuiOutlinedInput-root.Mui-focused": {
+                        "& > fieldset": {
+                            borderColor: "white"
+                        }
+                    },   "& .MuiOutlinedInput-root:hover": {
+                        "& > fieldset": {
+                            borderColor: "white"
+                        }
+                    },
+                    "& .MuiOutlinedInput-root": {
+                        "& > fieldset": { borderColor: "white" },
+                    },
+                    "& .MuiInputBase-root": {
+                        color: 'white'
+                    }
+                }}
+                variant="outlined"
             />
         </Grid>
     );
