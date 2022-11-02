@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
+
 const Schema = mongoose.Schema;
 
 const TrackSchema = new Schema({
@@ -17,7 +19,6 @@ const TrackSchema = new Schema({
     },
     number: {
         type: Number,
-        required: true,
     },
     published: {
         type: Boolean,
@@ -32,5 +33,6 @@ const TrackSchema = new Schema({
 });
 
 
+TrackSchema.plugin(AutoIncrement, {id: 'inhabitant_seq',inc_field: 'number', reference_fields: 'album'})
 const Track = mongoose.model('Track', TrackSchema);
 module.exports = Track;

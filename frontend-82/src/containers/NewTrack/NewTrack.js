@@ -32,7 +32,7 @@ const NewTrack = () => {
     useEffect(() => {
         if (artist === '' && state.album !== '') {
             const currentAlbum = albums.find(elem => elem._id === state.album);
-            const certainArtist = artists.find(elem => elem._id === currentAlbum.artist);
+            const certainArtist = artists.find(elem => elem._id === currentAlbum.artist._id);
             setArtist(certainArtist._id);
         }
     }, [state]);

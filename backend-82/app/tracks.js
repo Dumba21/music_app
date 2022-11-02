@@ -28,29 +28,9 @@ router.get('/', async (req, res) => {
             }
 
             if (user.role === 'user') {
-                // const published = await Tracks
-                //     .find({album: req.query.album})
-                //     .find({published: true})
-                //     .populate({
-                //         path: 'album',
-                //         populate: {
-                //             path: 'artist'
-                //         }
-                //     })
-                //     .sort({number: 1});
-                // const notPublished = await Tracks
-                //     .find({album: req.query.album})
-                //     .find({published: false})
-                //     .find({user: user._id})
-                //     .populate({
-                //         path: 'album',
-                //         populate: {
-                //             path: 'artist'
-                //         }
-                //     })
-                //     .sort({number: 1});
                 const tracks = await Tracks
-                    .find({'$or': [{album: req.query.album}, {published: true}, {user: user._id}]})
+                    .find({'$or': [{album: req.query.album, published: true}, {published: false, user: user._id}]})
+                    // .find()
                     .populate({
                         path: 'album',
                         populate: {
@@ -113,7 +93,7 @@ router.post('/:id/publish', auth, permit('admin'), async (req, res) => {
 })
 
 router.post('/', auth, async (req, res) => {
-    if (!req.body.name || !req.body.album || !req.body.duration || !req.body.number) {
+    if (!req.body.name || !req.body.album || !req.body.duration) {
         return res.status(400).send('Data is not valid');
     }
     try {
@@ -121,7 +101,6 @@ router.post('/', auth, async (req, res) => {
             name: req.body.name,
             album: req.body.album,
             duration: req.body.duration,
-            number: req.body.number,
             user: req.user._id,
         };
 
